@@ -1,0 +1,49 @@
+version: '3.9'
+
+services:
+  auth:
+    container_name: ${PROJECT_NAME}-app
+    build:
+      context: ./auth
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    networks:
+      custom_network:
+    depends_on:
+      - db-auth
+      - redis-auth
+
+  db-auth:
+    image: postgres:15.2-alpine
+    restart: always
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    env_file:
+      - .env
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    networks:
+      custom_network:
+
+  redis-auth:
+    container_name: ${PROJECT_NAME}-redis
+    image: redis:7.0.10-alpine
+    restart: always
+    volumes:
+      - redis:/data
+    networks:
+      custom_network:
+    expose:
+      - ${REDIS_PORT}
+
+volumes:
+  postgres:
+  redis:
+
+networks:
+  custom_network:
+    external: True

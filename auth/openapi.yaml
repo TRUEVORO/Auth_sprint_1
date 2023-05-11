@@ -1,0 +1,370 @@
+{
+  "definitions": {
+    "RoleAssignmentData": {
+      "properties": {
+        "name": {
+          "description": "The name of the user to assign the role to.",
+          "type": "string"
+        },
+        "role_id": {
+          "description": "The ID of the role to assign.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role_id",
+        "name"
+      ]
+    },
+    "RoleData": {
+      "properties": {
+        "name": {
+          "description": "The name of the role.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "RoleDeleteData": {
+      "properties": {
+        "role_id": {
+          "description": "The ID of the role to delete.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role_id"
+      ]
+    },
+    "RoleRemovalData": {
+      "properties": {
+        "name": {
+          "description": "The name of the user to remove the role from.",
+          "type": "string"
+        },
+        "role_id": {
+          "description": "The ID of the role to remove.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role_id",
+        "name"
+      ]
+    },
+    "RoleUpdateData": {
+      "properties": {
+        "name": {
+          "description": "The new name of the role.",
+          "type": "string"
+        },
+        "role_id": {
+          "description": "The ID of the role to update.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role_id",
+        "name"
+      ]
+    },
+    "login_data": {
+      "properties": {
+        "email": {
+          "description": "The email of the user",
+          "type": "string"
+        },
+        "password": {
+          "description": "The password of the user",
+          "type": "string"
+        }
+      }
+    },
+    "user_data": {
+      "properties": {
+        "email": {
+          "description": "The email of the user",
+          "type": "string"
+        },
+        "name": {
+          "description": "The name of the user",
+          "type": "string"
+        },
+        "password": {
+          "description": "The password of the user",
+          "type": "string"
+        }
+      }
+    }
+  },
+  "info": {
+    "description": "powered by Flasgger",
+    "termsOfService": "/tos",
+    "title": "A swagger API",
+    "version": "0.0.1"
+  },
+  "paths": {
+    "/admin/assign_role": {
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/RoleAssignmentData"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Role assigned successfully"
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        },
+        "summary": "Assign a role to a user",
+        "tags": [
+          "Admin"
+        ]
+      }
+    },
+    "/admin/remove_role": {
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/RoleRemovalData"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Role removed successfully"
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        },
+        "summary": "Remove a role from a user",
+        "tags": [
+          "Admin"
+        ]
+      }
+    },
+    "/admin/roles/create": {
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/RoleData"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Role created successfully"
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        },
+        "summary": "Create a new role",
+        "tags": [
+          "Admin"
+        ]
+      }
+    },
+    "/admin/roles/delete_role": {
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/RoleDeleteData"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Role deleted successfully"
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        },
+        "summary": "Delete a role",
+        "tags": [
+          "Admin"
+        ]
+      }
+    },
+    "/admin/roles/retrieve_roles": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Roles retrieved successfully"
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        },
+        "summary": "Retrieve all roles",
+        "tags": [
+          "Admin"
+        ]
+      }
+    },
+    "/admin/roles/update_role": {
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/RoleUpdateData"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Role updated successfully"
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        },
+        "summary": "Update a role",
+        "tags": [
+          "Admin"
+        ]
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "description": "This endpoint issues a new pair of access and refresh tokens using the provided refresh token.<br/>",
+        "responses": {
+          "200": {
+            "description": "Tokens refreshed successfully"
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        },
+        "summary": "Refresh Tokens",
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/auth/sign-in": {
+      "post": {
+        "description": "This endpoint authenticates the user with the provided data and returns access and refresh tokens.<br/>",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/login_data"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User authenticated successfully"
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        },
+        "summary": "Sign In User",
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/auth/sign-out": {
+      "post": {
+        "description": "This endpoint revokes the user's access and refresh tokens and logs them out.<br/>",
+        "responses": {
+          "200": {
+            "description": "User signed out successfully"
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        },
+        "summary": "Sign Out User",
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/auth/sign-up": {
+      "post": {
+        "description": "This endpoint registers a new user with the provided data and returns the created user.<br/>",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/user_data"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User created successfully"
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        },
+        "summary": "Sign Up User",
+        "tags": [
+          "Authentication"
+        ]
+      }
+    }
+  },
+  "swagger": "2.0"
+}
