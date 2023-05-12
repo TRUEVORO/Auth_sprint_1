@@ -27,6 +27,7 @@ repos:
           --profile=black,
           --line-length=120,
           --src=auth/src,
+          --src=auth,
         ]
 
   # black

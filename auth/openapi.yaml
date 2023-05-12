@@ -265,6 +265,26 @@
         ]
       }
     },
+    "/auth/auth-history": {
+      "post": {
+        "description": "This endpoint retrieves the user's auth history.<br/>",
+        "responses": {
+          "200": {
+            "description": "Auth history retrieved successfully"
+          },
+          "400": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        },
+        "summary": "Retrieve user's auth history",
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
     "/auth/refresh": {
       "post": {
         "description": "This endpoint issues a new pair of access and refresh tokens using the provided refresh token.<br/>",
