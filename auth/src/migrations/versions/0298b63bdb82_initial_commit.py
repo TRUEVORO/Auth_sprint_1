@@ -1,8 +1,8 @@
-"""empty message
+"""Initial commit
 
-Revision ID: 140cbc27b4e5
+Revision ID: 0298b63bdb82
 Revises:
-Create Date: 2023-05-10 22:46:38.191850
+Create Date: 2023-05-12 17:26:08.089069
 
 """
 import sqlalchemy as sa
@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
 from models import RoleName, RoleOrm
 
 # revision identifiers, used by Alembic.
-revision = '140cbc27b4e5'
+revision = '0298b63bdb82'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -48,15 +48,11 @@ def upgrade():
         'user_role',
         sa.Column('user_id', sa.Uuid(), nullable=False),
         sa.Column('role_id', sa.Uuid(), nullable=False),
-        sa.ForeignKeyConstraint(
-            ['role_id'],
-            ['role.id'],
-        ),
+        sa.ForeignKeyConstraint(['role_id'], ['role.id'], ondelete='CASCADE'),
         sa.ForeignKeyConstraint(['user_id'], ['user.id'], ondelete='CASCADE'),
         sa.PrimaryKeyConstraint('user_id', 'role_id'),
     )
     # ### end Alembic commands ###
-
     # Create and insert user and admin roles
     user_role = RoleOrm(name=RoleName.user)
     admin_role = RoleOrm(name=RoleName.admin)
@@ -74,3 +70,4 @@ def downgrade():
     op.drop_table('user')
     op.drop_table('role')
     # ### end Alembic commands ###
+    op.execute('DROP TYPE rolename')

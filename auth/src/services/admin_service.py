@@ -1,7 +1,6 @@
 from uuid import UUID
 
 from flask import Response, jsonify
-from flask_jwt_extended import jwt_required
 
 from core import EmptyRequestError
 from models import Role, RoleOrm, User, UserOrm
@@ -14,7 +13,6 @@ class RoleManagerService(BaseService):
     """Role manager service."""
 
     @error_handler()
-    @jwt_required()
     @check_permission('admin')
     def create_role(self, name: str | None = None) -> Response | EmptyRequestError:
         """Create role and add it to database."""
@@ -26,7 +24,6 @@ class RoleManagerService(BaseService):
         return jsonify('Role {} created!'.format(Role.from_orm(role).dict()))
 
     @error_handler()
-    @jwt_required()
     @check_permission('admin')
     def retrieve_roles(self) -> Response:
         """Retrieve all roles from database."""
@@ -35,7 +32,6 @@ class RoleManagerService(BaseService):
         return jsonify('Roles: {}'.format([Role.from_orm(role).dict() for role in roles]))
 
     @error_handler()
-    @jwt_required()
     @check_permission('admin')
     def update_role(self, role_id: UUID | None = None, new_name: str | None = None) -> Response:
         """Update name of specific role."""
@@ -47,7 +43,6 @@ class RoleManagerService(BaseService):
         return jsonify('Role {} updated'.format(Role.from_orm(role).dict()))
 
     @error_handler()
-    @jwt_required()
     @check_permission('admin')
     def delete_role(self, role_id: UUID) -> Response:
         """Delete role from database."""
@@ -63,7 +58,6 @@ class AdminService(RoleManagerService):
     """Admin service."""
 
     @error_handler()
-    @jwt_required()
     @check_permission('admin')
     def assign_user_role(self, user_id: UUID, role_name: str) -> Response:
         """Assign new role to specific user."""
@@ -75,7 +69,6 @@ class AdminService(RoleManagerService):
         return jsonify('Role {} assigned to {}'.format(role_name, User.from_orm(user).dict()))
 
     @error_handler()
-    @jwt_required()
     @check_permission('admin')
     def remove_user_role(self, user_id: UUID, role_name: str) -> Response:
         """Remove role from specific user."""

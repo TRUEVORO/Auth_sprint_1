@@ -9,17 +9,22 @@ network: ## - Создать общую сеть для сервисов
 	docker network create custom_network
 
 run: ## - Запустить docker-compose
-	docker-compose -f docker-compose.yaml up --build -d
+	docker-compose -f docker-compose.yaml up --build -d auth
 
 db: ## - Выполнить миграции
 	docker-compose -f docker-compose.yaml exec auth bash -c "cd /opt/auth/src && python -m flask db upgrade"
 
-auth: ## - Запустить сервис auth
+auth_service: ## - Запустить сервис auth
 	make run
 	make db
 
 stop: ## - Уронить docker-compose
 	docker-compose -f docker-compose.yaml down
+
+tests: ## - Запуск контейнеров для тестов и выполнение тестов
+	docker-compose -f docker-compose.yaml up --build -d test-db-auth && docker-compose -f docker-compose.yaml up --build -d test-redis-auth
+	bash -c "cd auth/src && python -m pytest -p no:cacheprovider ../tests/src/api/*"
+
 
 clean: ## - Очистить docker
 	docker stop $$(docker ps -aq)

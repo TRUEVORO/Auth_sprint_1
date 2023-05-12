@@ -1,7 +1,7 @@
 from flask import Response, jsonify
-from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_jwt_extended import get_jwt_identity
 
-from models import AuthHistoryOrm, LoginRequest, RoleOrm, SignupRequest, UserOrm
+from models import AuthHistoryOrm, LoginRequest, RoleOrm, SignupRequest, User, UserOrm
 
 from .base_service import BaseService
 from .utils import error_handler
@@ -33,7 +33,6 @@ class AuthenticationService(BaseService):
         return jsonify(self._create_tokens(user.id, user.get_roles(), is_fresh=True))
 
     @error_handler()
-    @jwt_required(refresh=True)
     def refresh(self) -> Response:
         """Refresh method."""
 
@@ -44,9 +43,17 @@ class AuthenticationService(BaseService):
         return jsonify(self._create_tokens(user.get('user_id'), user.get('user_roles')))
 
     @error_handler()
-    @jwt_required()
     def sign_out(self) -> Response:
         """Sign out method."""
 
         self._revoke_tokens()
         return jsonify('signed out')
+
+    @error_handler()
+    def auth_history(self) -> Response:
+        """Sign out method."""
+
+        user = get_jwt_identity()
+
+        auth_history = User.from_orm(self.client.retrieve(UserOrm, id=user.get('user_id'))).auth_history
+        return jsonify([auth.dict(include={'user_agent', 'timestamp'}) for auth in auth_history])
