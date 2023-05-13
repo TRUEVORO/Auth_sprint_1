@@ -3,6 +3,7 @@ from flask_jwt_extended import jwt_required
 
 from clients import sqlalchemy_client
 from services import AdminService
+from services.utils import check_permission
 
 admin_routes: Blueprint = Blueprint('admin', __name__, url_prefix='/admin')
 admin_service: AdminService = AdminService(client=sqlalchemy_client)
@@ -10,6 +11,7 @@ admin_service: AdminService = AdminService(client=sqlalchemy_client)
 
 @admin_routes.route('/roles/create', methods=('POST',))
 @jwt_required()
+@check_permission('admin')
 def create_role():
     """
     Create a new role
@@ -41,6 +43,7 @@ def create_role():
 
 @admin_routes.route('/roles/retrieve_roles', methods=('POST',))
 @jwt_required()
+@check_permission('admin')
 def retrieve_roles():
     """
     Retrieve all roles
@@ -60,6 +63,7 @@ def retrieve_roles():
 
 @admin_routes.route('/roles/update_role', methods=('POST',))
 @jwt_required()
+@check_permission('admin')
 def update_role():
     """
     Update a role
@@ -95,6 +99,7 @@ def update_role():
 
 @admin_routes.route('/roles/delete_role', methods=('POST',))
 @jwt_required()
+@check_permission('admin')
 def delete_role():
     """
     Delete a role
@@ -126,6 +131,7 @@ def delete_role():
 
 @admin_routes.route('/assign_role', methods=('POST',))
 @jwt_required()
+@check_permission('admin')
 def assign_user_role():
     """
     Assign a role to a user
@@ -161,6 +167,7 @@ def assign_user_role():
 
 @admin_routes.route('/remove_role', methods=('POST',))
 @jwt_required()
+@check_permission('admin')
 def remove_user_role():
     """
     Remove a role from a user
