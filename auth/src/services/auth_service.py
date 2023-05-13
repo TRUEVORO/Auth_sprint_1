@@ -56,4 +56,4 @@ class AuthenticationService(BaseService):
         user = get_jwt_identity()
 
         auth_history = User.from_orm(self.client.retrieve(UserOrm, id=user.get('user_id'))).auth_history
-        return jsonify([auth.dict(include={'user_agent', 'timestamp'}) for auth in auth_history])
+        return jsonify(reversed([auth.dict(include={'user_agent', 'timestamp'}) for auth in auth_history][:10]))
